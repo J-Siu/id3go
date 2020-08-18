@@ -14,5 +14,5 @@ package main
 import "github.com/J-Siu/id3go/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

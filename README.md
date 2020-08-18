@@ -57,6 +57,8 @@ apt-get install libtagc0-dev
 
 ```sh
 go get github.com/J-Siu/id3go
+cd $GOPATH/src/github.com/J-Siu/id3go
+go install
 ```
 
 ### Usage
