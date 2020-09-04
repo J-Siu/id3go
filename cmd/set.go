@@ -15,7 +15,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/J-Siu/id3go/helper"
+	"github.com/J-Siu/id3go/tagfile"
 	"github.com/spf13/cobra"
 )
 
@@ -33,8 +33,8 @@ var setCmd = &cobra.Command{
 
 		// Check if any flag is used
 		anyChange := false
-		for i := 0; i < len(helper.Tags); i++ {
-			anyChange = (anyChange || cmd.Flag(helper.Tags[i].Ln).Changed)
+		for i := 0; i < len(tagfile.Tags); i++ {
+			anyChange = (anyChange || cmd.Flag(tagfile.Tags[i].Ln).Changed)
 		}
 
 		// Return if no flag is used (no tag to update)
@@ -53,11 +53,11 @@ var setCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(setCmd)
 
-	// Loop through Use helper.Tags to setup all flags
-	for i := 0; i < len(helper.Tags); i++ {
-		tagLongName := &helper.Tags[i].Ln
-		tagShortName := &helper.Tags[i].Sn
-		tagMessage := &helper.Tags[i].Ms
+	// Loop through Use tagfile.Tags to setup all flags
+	for i := 0; i < len(tagfile.Tags); i++ {
+		tagLongName := &tagfile.Tags[i].Ln
+		tagShortName := &tagfile.Tags[i].Sn
+		tagMessage := &tagfile.Tags[i].Ms
 
 		setCmd.Flags().StringP(*tagLongName, *tagShortName, "", *tagMessage)
 	}
@@ -69,22 +69,22 @@ func setTags(cmd *cobra.Command, path *string, dryrunMsg *string, save bool) {
 
 	fmt.Println("File", *dryrunMsg, ":", *path)
 
-	fh := helper.Open(*path)
+	fh := tagfile.Open(*path)
 	if fh == nil {
 		// Fail to open, next file ...
 		return
 	}
 
 	updateMsg := ""
-	for i := 0; i < len(helper.Tags); i++ {
-		flagLongName := &helper.Tags[i].Ln
+	for i := 0; i < len(tagfile.Tags); i++ {
+		flagLongName := &tagfile.Tags[i].Ln
 		flagChanged := cmd.Flag(*flagLongName).Changed
-		tagDisplayName := &helper.Tags[i].Dn
+		tagDisplayName := &tagfile.Tags[i].Dn
 		tagValNew := cmd.Flag(*flagLongName).Value.String()
-		tagValOld := fh.Get(&helper.Tags[i])
+		tagValOld := fh.Get(&tagfile.Tags[i])
 		if flagChanged && tagValNew != tagValOld {
 			updateMsg += fmt.Sprintln(*tagDisplayName, ":", tagValOld, "->", tagValNew)
-			fh.Set(&helper.Tags[i], tagValNew)
+			fh.Set(&tagfile.Tags[i], tagValNew)
 		}
 	}
 	if updateMsg == "" {

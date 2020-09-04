@@ -10,7 +10,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package helper
+package tagfile
 
 import (
 	"fmt"
@@ -37,40 +37,40 @@ var Tags = []TagStruct{
 	{"comment", "c", "Comments", "set comments", taglib.Comments},
 }
 
-// File : struct holding filename and the taglib.File handle
-type File struct {
+// TagFile : struct holding filename and the taglib.File handle
+type TagFile struct {
 	name string       // filename
-	tfh   *taglib.File // taglib file handle
+	tlf  *taglib.File // taglib file handle
 }
 
 // Open : open a taglib FILE
-func Open(path string) *File {
-	tfh, e := taglib.Read(path)
+func Open(path string) *TagFile {
+	tlf, e := taglib.Read(path)
 	// If taglib fail to open file, exit
 	if e != nil {
 		fmt.Println(path, ":", e)
 		return nil
 	}
-	var fh = &File{path, tfh}
+	var fh = &TagFile{path, tlf}
 	return fh
 }
 
 // Save : save taglib FILE
-func (fh *File) Save() {
-	fh.tfh.Save()
+func (fh *TagFile) Save() {
+	fh.tlf.Save()
 }
 
 // Close : close taglib FILE
-func (fh *File) Close() {
-	fh.tfh.Close()
+func (fh *TagFile) Close() {
+	fh.tlf.Close()
 }
 
 // Set : get tag
-func (fh *File) Set(tag *TagStruct, val string) {
-	fh.tfh.SetTag(tag.tn, val)
+func (fh *TagFile) Set(tag *TagStruct, val string) {
+	fh.tlf.SetTag(tag.tn, val)
 }
 
 // Get : get tag
-func (fh *File) Get(tag *TagStruct) string {
-	return fh.tfh.Tag(tag.tn)
+func (fh *TagFile) Get(tag *TagStruct) string {
+	return fh.tlf.Tag(tag.tn)
 }

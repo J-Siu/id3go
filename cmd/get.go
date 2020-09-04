@@ -15,7 +15,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/J-Siu/id3go/helper"
+	"github.com/J-Siu/id3go/tagfile"
 	"github.com/spf13/cobra"
 )
 
@@ -41,15 +41,15 @@ func init() {
 func getTags(cmd *cobra.Command, path *string) {
 	fmt.Println("File :", *path)
 
-	fh := helper.Open(*path)
+	fh := tagfile.Open(*path)
 	if fh == nil {
 		return
 	}
 
-	for i := 0; i < len(helper.Tags); i++ {
-		tagLongName := &helper.Tags[i].Ln
-		tagDisplayName := &helper.Tags[i].Dn
-		tagVal := fh.Get(&helper.Tags[i])
+	for i := 0; i < len(tagfile.Tags); i++ {
+		tagLongName := &tagfile.Tags[i].Ln
+		tagDisplayName := &tagfile.Tags[i].Dn
+		tagVal := fh.Get(&tagfile.Tags[i])
 
 		// If track / year is 0, assume empty
 		if (*tagLongName == "year" || *tagLongName == "track") && tagVal == "0" {
