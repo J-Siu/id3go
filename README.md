@@ -127,6 +127,8 @@ id3go set --album "My Record" *.mp3
 - 1.1
   - Add GitHub workflow
   - Use Go module
+- 1.2
+  - Use Go 1.16
 
 ### License
 
