@@ -129,6 +129,8 @@ id3go set --album "My Record" *.mp3
   - Use Go module
 - 1.2
   - Use Go 1.16
+- 1.3
+  - Remove GitHub workflow due to taglib dependency
 
 ### License
 
