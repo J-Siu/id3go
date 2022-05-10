@@ -57,6 +57,10 @@ jobs:
           echo "::set-output name=tag_patch::${TAG_PATCH}"
           echo "::set-output name=tag_special::${TAG_SPECIAL}"
 
+      - name: Install taglib
+        run: |
+          sudo apt -y install libtagc0-dev
+
       # GoReleaser will take care of publishing those artifacts into the release
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
