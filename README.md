@@ -133,6 +133,8 @@ id3go set --album "My Record" *.mp3
   - Remove GitHub workflow due to taglib dependency
 - v1.3.1
   - Fix goreleaser
+- v1.3.2
+  - Fix github action
 
 ### License
 
