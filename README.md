@@ -2,11 +2,10 @@
 
 Command line tool for updating of media file tags.
 
-`id3go` use [go-taglib](https://github.com/wtolson/go-taglib) for easy viewing and updating of media file tags.
-
 ### Table Of Content
 <!-- TOC -->
 
+- [Table Of Content](#table-of-content)
 - [Features](#features)
 - [Dependencies](#dependencies)
   - [Alpine](#alpine)
@@ -22,6 +21,8 @@ Command line tool for updating of media file tags.
 - [License](#license)
 
 <!-- /TOC -->
+<!--more-->
+`id3go` use [go-taglib](https://github.com/wtolson/go-taglib) for easy viewing and updating of media file tags.
 
 ### Features
 
