@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2023 John Siu
+Copyright (c) 2025 John Siu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -19,13 +19,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
+const Version = "v1.3.5"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "id3go",
-	Short: "Get and set tags of files.",
-	Long:  `Get and set tags of files.`,
+	Use:     "id3go",
+	Short:   "Get and set tags of files.",
+	Long:    `Get and set tags of files.`,
+	Version: Version,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
