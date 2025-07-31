@@ -141,8 +141,10 @@ id3go set --album "My Record" *.mp3
 - v1.3.4
   - USe Go 1.20
 - v1.3.5
-  - Add github workflows
+  - Add Github workflows
   - Use Go 1.24.5
+- v1.3.6
+  - Del Github workflows due to taglib(libtagc) dependency
 
 ### License
 
