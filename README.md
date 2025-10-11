@@ -5,7 +5,6 @@ Command line tool for updating of media file tags.
 ### Table Of Content
 <!-- TOC -->
 
-- [Table Of Content](#table-of-content)
 - [Features](#features)
 - [Dependencies](#dependencies)
   - [Alpine](#alpine)
@@ -145,6 +144,9 @@ id3go set --album "My Record" *.mp3
   - Use Go 1.24.5
 - v1.3.6
   - Del Github workflows due to taglib(libtagc) dependency
+- v1.4.0
+  - Update to [go-helper/v2](https://github.com/J-Siu/go-helper)
+  - Cleanup
 
 ### License
 

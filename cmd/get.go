@@ -13,24 +13,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/J-Siu/id3go/tagfile"
+	"github.com/J-Siu/go-helper/v2/ezlog"
+	"github.com/J-Siu/id3go/tag"
 	"github.com/spf13/cobra"
 )
 
 var getCmd = &cobra.Command{
 	Use:                   "get <files>",
+	Aliases:               []string{"g"},
 	DisableFlagsInUseLine: true,
 	Short:                 "Get tags of files",
-	Long:                  `Get tags of files`,
 	Run: func(cmd *cobra.Command, args []string) {
-
 		// Loop through file list
 		for j := 0; j < len(args); j++ {
-			getTags(cmd, &args[j])
+			getTags(&args[j])
 		}
-
 	},
 }
 
@@ -38,28 +35,27 @@ func init() {
 	rootCmd.AddCommand(getCmd)
 }
 
-func getTags(cmd *cobra.Command, path *string) {
-	fmt.Println("File :", *path)
+func getTags(path *string) {
+	ezlog.Log().N("File").M(path).Out()
 
-	fh := tagfile.Open(*path)
-	if fh == nil {
+	t := new(tag.TagFile).New(*path)
+	if t.Err != nil {
 		return
 	}
 
-	for i := 0; i < len(tagfile.Tags); i++ {
-		tagLongName := &tagfile.Tags[i].Ln
-		tagDisplayName := &tagfile.Tags[i].Dn
-		tagVal := fh.Get(&tagfile.Tags[i])
+	for _, item := range tag.Tags {
+		tagLongName := &item.Ln
+		tagDisplayName := &item.Dn
+		tagVal := t.Get(&item)
 
 		// If track / year is 0, assume empty
 		if (*tagLongName == "year" || *tagLongName == "track") && tagVal == "0" {
 			tagVal = ""
 		}
-
 		if tagVal != "" {
-			fmt.Println(*tagDisplayName, ":", tagVal)
+			ezlog.Log().N(tagDisplayName).M(tagVal).Out()
 		}
 	}
 
-	fh.Close()
+	t.Close()
 }

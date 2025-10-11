@@ -16,17 +16,15 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/J-Siu/id3go/tag"
 	"github.com/spf13/cobra"
 )
-
-const Version = "v1.3.5"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:     "id3go",
 	Short:   "Get and set tags of files.",
-	Long:    `Get and set tags of files.`,
-	Version: Version,
+	Version: tag.Version,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

@@ -1,5 +1,4 @@
-# Added by goreleaser init:
 .DS_Store
-build/
-dist/
+build
+go.work*
 id3go

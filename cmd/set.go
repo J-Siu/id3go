@@ -13,93 +13,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/J-Siu/id3go/tagfile"
+	"github.com/J-Siu/go-helper/v2/ezlog"
+	"github.com/J-Siu/id3go/tag"
 	"github.com/spf13/cobra"
 )
 
 var setCmd = &cobra.Command{
-	Use:   "set [flags] <files>",
-	Short: "Set tags of files",
-	Long:  `Set tags of files`,
+	Use:     "set [flags] <files>",
+	Aliases: []string{"s"},
+	Short:   "Set tags of files",
+	Long:    `Set tags of files`,
 	Run: func(cmd *cobra.Command, args []string) {
-
 		save, _ := cmd.Flags().GetBool("Save")
 		dryrunMsg := ""
 		if !save {
 			dryrunMsg = "(Dry Run)"
 		}
-
-		// Check if any flag is used
-		anyChange := false
-		for i := 0; i < len(tagfile.Tags); i++ {
-			anyChange = (anyChange || cmd.Flag(tagfile.Tags[i].Ln).Changed)
-		}
-
-		// Return if no flag is used (no tag to update)
-		if !anyChange {
-			fmt.Println("Nothing to update.")
-			return
-		}
-
-		// Loop through file list
-		for j := 0; j < len(args); j++ {
-			setTags(cmd, &args[j], &dryrunMsg, save)
+		for _, item := range args {
+			setTags(cmd, &item, &dryrunMsg, save)
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(setCmd)
-
-	// Loop through Use tagfile.Tags to setup all flags
-	for i := 0; i < len(tagfile.Tags); i++ {
-		tagLongName := &tagfile.Tags[i].Ln
-		tagShortName := &tagfile.Tags[i].Sn
-		tagMessage := &tagfile.Tags[i].Ms
-
+	// Loop through Use tag.Tags to setup all flags
+	for i := 0; i < len(tag.Tags); i++ {
+		tagLongName := &tag.Tags[i].Ln
+		tagShortName := &tag.Tags[i].Sn
+		tagMessage := &tag.Tags[i].Ms
 		setCmd.Flags().StringP(*tagLongName, *tagShortName, "", *tagMessage)
 	}
 	// "Save" flag
-	setCmd.Flags().BoolP("Save", "S", false, "save to file. Without this flag, `set` will not writing to files (dry run).")
+	setCmd.Flags().BoolP("Save", "S", false, "save to file. Without this flag, `set` will not update file (dry run).")
 }
 
-func setTags(cmd *cobra.Command, path *string, dryrunMsg *string, save bool) {
+func setTags(cmd *cobra.Command, path, dryrunMsg *string, save bool) {
+	ezlog.Log().N("File" + *dryrunMsg).M(path).Out()
 
-	fmt.Println("File", *dryrunMsg, ":", *path)
-
-	fh := tagfile.Open(*path)
-	if fh == nil {
-		// Fail to open, next file ...
-		return
+	t := new(tag.TagFile).New(*path)
+	if t.Err != nil {
+		return // Fail to open, next file ...
 	}
 
-	updateMsg := ""
-	for i := 0; i < len(tagfile.Tags); i++ {
-		flagLongName := &tagfile.Tags[i].Ln
-		flagChanged := cmd.Flag(*flagLongName).Changed
-		tagDisplayName := &tagfile.Tags[i].Dn
-		tagValNew := cmd.Flag(*flagLongName).Value.String()
-		tagValOld := fh.Get(&tagfile.Tags[i])
+	updated := false
+	ezlog.Log()
+	for _, item := range tag.Tags {
+		flagChanged := cmd.Flag(item.Ln).Changed
+		tagDisplayName := &item.Dn
+		tagValNew := cmd.Flag(item.Ln).Value.String()
+		tagValOld := t.Get(&item)
 		if flagChanged && tagValNew != tagValOld {
-			updateMsg += fmt.Sprintln(*tagDisplayName, ":", tagValOld, "->", tagValNew)
-			fh.Set(&tagfile.Tags[i], tagValNew)
+			t.Set(&item, tagValNew)
+			updated = true
+			ezlog.N(tagDisplayName).M(tagValOld).M("->").Mn(tagValNew)
 		}
 	}
-	if updateMsg == "" {
-		// All new tag values are same as old
-		fmt.Println("Nothing to update.")
-	} else {
-
-		fmt.Print(updateMsg)
-
+	if updated {
+		ezlog.Se().Out()
 		// Only save to file if not dry run
 		if save {
-			fh.Save()
-			fmt.Println("Updated.")
+			t.Save()
+			ezlog.M("Updated.").Out()
 		}
+	} else {
+		// All new tag values are same as old
+		ezlog.M("Nothing to update.").Out()
 	}
 
-	fh.Close()
+	t.Close()
 }
