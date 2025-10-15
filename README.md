@@ -16,7 +16,6 @@ Command line tool for updating of media file tags.
   - [Set](#set)
 - [Repository](#repository)
 - [Contributors](#contributors)
-- [Changelog](#changelog)
 - [License](#license)
 
 <!-- /TOC -->
@@ -122,31 +121,6 @@ id3go set --album "My Record" *.mp3
 ### Contributors
 
 - [John Sing Dao Siu](https://github.com/J-Siu)
-
-### Changelog
-
-- 1.0
-  - Initial release
-- 1.1
-  - Add GitHub workflow
-  - Use Go module
-- 1.2
-  - Use Go 1.16
-- 1.3
-  - Remove GitHub workflow due to taglib dependency
-- v1.3.3
-  - Use Go 1.18
-  - Update packages
-- v1.3.4
-  - USe Go 1.20
-- v1.3.5
-  - Add Github workflows
-  - Use Go 1.24.5
-- v1.3.6
-  - Del Github workflows due to taglib(libtagc) dependency
-- v1.4.0
-  - Update to [go-helper/v2](https://github.com/J-Siu/go-helper)
-  - Cleanup
 
 ### License
 

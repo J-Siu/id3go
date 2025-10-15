@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/J-Siu/id3go/tag"
+	"github.com/J-Siu/id3go/global"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +24,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "id3go",
 	Short:   "Get and set tags of files.",
-	Version: tag.Version,
+	Version: global.Version,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

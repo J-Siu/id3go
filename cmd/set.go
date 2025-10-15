@@ -14,6 +14,7 @@ package cmd
 
 import (
 	"github.com/J-Siu/go-helper/v2/ezlog"
+	"github.com/J-Siu/id3go/global"
 	"github.com/J-Siu/id3go/tag"
 	"github.com/spf13/cobra"
 )
@@ -36,16 +37,17 @@ var setCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(setCmd)
+	cmd := setCmd
+	rootCmd.AddCommand(cmd)
 	// Loop through Use tag.Tags to setup all flags
-	for i := 0; i < len(tag.Tags); i++ {
-		tagLongName := &tag.Tags[i].Ln
-		tagShortName := &tag.Tags[i].Sn
-		tagMessage := &tag.Tags[i].Ms
-		setCmd.Flags().StringP(*tagLongName, *tagShortName, "", *tagMessage)
+	for _, item := range global.Tags {
+		tagLongName := &item.Ln
+		tagShortName := &item.Sn
+		tagMessage := &item.Ms
+		cmd.Flags().StringP(*tagLongName, *tagShortName, "", *tagMessage)
 	}
 	// "Save" flag
-	setCmd.Flags().BoolP("Save", "S", false, "save to file. Without this flag, `set` will not update file (dry run).")
+	cmd.Flags().BoolP("Save", "S", false, "save to file. Without this flag, `set` will not update file (dry run).")
 }
 
 func setTags(cmd *cobra.Command, path, dryrunMsg *string, save bool) {
@@ -58,7 +60,7 @@ func setTags(cmd *cobra.Command, path, dryrunMsg *string, save bool) {
 
 	updated := false
 	ezlog.Log()
-	for _, item := range tag.Tags {
+	for _, item := range global.Tags {
 		flagChanged := cmd.Flag(item.Ln).Changed
 		tagDisplayName := &item.Dn
 		tagValNew := cmd.Flag(item.Ln).Value.String()
