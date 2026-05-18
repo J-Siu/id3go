@@ -20,3 +20,5 @@
 - v1.4.0
   - Update to [go-helper/v2](https://github.com/J-Siu/go-helper)
   - Cleanup
+- v1.4.1
+  - update go-helper/v2

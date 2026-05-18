@@ -12,4 +12,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 package global
 
-const Version = "v1.4.0"
+const Version = "v1.4.1"

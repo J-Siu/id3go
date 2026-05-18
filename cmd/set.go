@@ -68,7 +68,7 @@ func setTags(cmd *cobra.Command, path, dryrunMsg *string, save bool) {
 		if flagChanged && tagValNew != tagValOld {
 			t.Set(&item, tagValNew)
 			updated = true
-			ezlog.N(tagDisplayName).M(tagValOld).M("->").Mn(tagValNew)
+			ezlog.N(tagDisplayName).M(tagValOld).M("->").M(tagValNew).L()
 		}
 	}
 	if updated {
